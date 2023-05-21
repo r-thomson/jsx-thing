@@ -1,0 +1,23 @@
+{
+  "root": true,
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "prettier"
+  ],
+  "plugins": ["@typescript-eslint"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": true,
+    "tsconfigRootDir": "."
+  },
+  "overrides": [
+    {
+      "files": ["src/*.test.*"],
+      "rules": {
+        "@typescript-eslint/require-await": "off"
+      }
+    }
+  ]
+}

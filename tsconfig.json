@@ -1,0 +1,15 @@
+{
+  "extends": "@tsconfig/recommended/tsconfig.json",
+  "compilerOptions": {
+    "target": "ES2022",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "declaration": true,
+    "sourceMap": true,
+    "declarationMap": true,
+    "jsx": "react",
+    "jsxFactory": "h",
+    "jsxFragmentFactory": "null"
+  },
+  "include": ["src/**/*"]
+}
