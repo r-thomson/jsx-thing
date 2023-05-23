@@ -1,4 +1,4 @@
-import { VOID_ELEMENTS, htmlAttributeNameRegex, htmlEsc } from './html.js';
+import { VOID_ELEMENTS, htmlAttributeNameRegex, htmlEsc, htmlTagNameRegex } from './html.js';
 
 class Element extends String {}
 
@@ -9,6 +9,10 @@ export interface Props {
 export function h(type: string, props?: Props | null, ...children: unknown[]): Element {
 	if (typeof type !== 'string') {
 		throw new TypeError('Element must be a string');
+	}
+
+	if (!htmlTagNameRegex.test(type)) {
+		throw new TypeError('Invalid HTML tag name');
 	}
 
 	let html = '<' + type;
