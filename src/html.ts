@@ -18,3 +18,6 @@ export const VOID_ELEMENTS = new Set([
 	'track',
 	'wbr',
 ]);
+
+// https://html.spec.whatwg.org/#attributes-2
+export const htmlAttributeNameRegex = /^[^ "'>/=\p{Control}\p{NChar}]+$/u;

@@ -1,4 +1,4 @@
-import { VOID_ELEMENTS, htmlEsc } from './html.js';
+import { VOID_ELEMENTS, htmlAttributeNameRegex, htmlEsc } from './html.js';
 
 class Element extends String {}
 
@@ -15,6 +15,10 @@ export function h(type: string, props?: Props | null, ...children: unknown[]): E
 
 	if (props) {
 		Object.entries(props).forEach(([attr, value]) => {
+			if (!htmlAttributeNameRegex.test(attr)) {
+				throw new TypeError('Invalid HTML attribute name');
+			}
+
 			// Render "attr={true}" as "attr", render nothing for "attr={false}"
 			if (value === true) {
 				html += ' ' + htmlEsc(attr);
