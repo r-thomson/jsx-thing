@@ -114,3 +114,10 @@ test('escapes nested text content', async (t) => {
 		'<div><p>a&#60;b&#38;c</p></div>'
 	);
 });
+
+test('does not escape dangerouslySetInnerHTML content', async (t) => {
+	t.looseEqual(
+		<div dangerouslySetInnerHTML={{ __html: '<b>bold</b>' }} />,
+		'<div><b>bold</b></div>'
+	);
+});

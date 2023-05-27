@@ -9,6 +9,7 @@ class Element extends String {}
 
 export interface Props {
 	[attr: string]: unknown;
+	dangerouslySetInnerHTML?: { __html: string };
 }
 
 export function h(type: string, props?: Props | null, ...children: unknown[]): Element {
@@ -24,6 +25,8 @@ export function h(type: string, props?: Props | null, ...children: unknown[]): E
 
 	if (props) {
 		Object.entries(props).forEach(([attr, value]) => {
+			if (attr === 'dangerouslySetInnerHTML') return;
+
 			if (!htmlAttributeNameRegex.test(attr)) {
 				throw new TypeError('Invalid HTML attribute name');
 			}
@@ -42,13 +45,17 @@ export function h(type: string, props?: Props | null, ...children: unknown[]): E
 	html += '>';
 
 	if (!VOID_ELEMENTS.has(type)) {
-		children.flat().forEach((child) => {
-			if (child instanceof Element) {
-				html += child; // Already escaped
-			} else if (child !== null && child !== undefined && typeof child !== 'boolean') {
-				html += htmlEsc(String(child));
-			}
-		});
+		if (props && props.dangerouslySetInnerHTML) {
+			html += props.dangerouslySetInnerHTML.__html;
+		} else {
+			children.flat().forEach((child) => {
+				if (child instanceof Element) {
+					html += child; // Already escaped
+				} else if (child !== null && child !== undefined && typeof child !== 'boolean') {
+					html += htmlEsc(String(child));
+				}
+			});
+		}
 
 		html += `</${type}>`;
 	}
