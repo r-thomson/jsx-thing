@@ -67,6 +67,11 @@ test('handles numeric attributes', async (t) => {
 	t.looseEqual(<div data-count={1.5} />, '<div data-count="1.5"></div>');
 });
 
+test('remaps reserved attribute names', async (t) => {
+	t.looseEqual(<div className="class" />, '<div class="class"></div>');
+	t.looseEqual(<label htmlFor="input" />, '<label for="input"></label>');
+});
+
 test('does not emit closing tag for void elements', async (t) => {
 	t.looseEqual(<area />, '<area>');
 	t.looseEqual(<base />, '<base>');

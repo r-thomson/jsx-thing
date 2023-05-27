@@ -1,5 +1,10 @@
 import { VOID_ELEMENTS, htmlAttributeNameRegex, htmlEsc, htmlTagNameRegex } from './html.js';
 
+const REMAPPED_ATTRS: { [attr: string]: string | undefined } = {
+	htmlFor: 'for',
+	className: 'class',
+};
+
 class Element extends String {}
 
 export interface Props {
@@ -22,6 +27,8 @@ export function h(type: string, props?: Props | null, ...children: unknown[]): E
 			if (!htmlAttributeNameRegex.test(attr)) {
 				throw new TypeError('Invalid HTML attribute name');
 			}
+
+			attr = REMAPPED_ATTRS[attr] || attr;
 
 			// Render "attr={true}" as "attr", render nothing for "attr={false}"
 			if (value === true) {
