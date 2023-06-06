@@ -1,5 +1,7 @@
 import { VOID_ELEMENTS, htmlAttributeNameRegex, htmlEsc, htmlTagNameRegex } from './html.js';
 
+const SET_INNER_HTML_PROP = 'dangerouslySetInnerHTML';
+
 const REMAPPED_ATTRS: { [attr: string]: string | undefined } = {
 	htmlFor: 'for',
 	className: 'class',
@@ -9,7 +11,7 @@ class Element extends String {}
 
 export interface Props {
 	[attr: string]: unknown;
-	dangerouslySetInnerHTML?: { __html: string };
+	[SET_INNER_HTML_PROP]?: { __html: string };
 }
 
 export function h(type: string, props?: Props | null, ...children: unknown[]): Element {
@@ -25,7 +27,7 @@ export function h(type: string, props?: Props | null, ...children: unknown[]): E
 
 	if (props) {
 		Object.entries(props).forEach(([attr, value]) => {
-			if (attr === 'dangerouslySetInnerHTML') return;
+			if (attr === SET_INNER_HTML_PROP) return;
 
 			if (!htmlAttributeNameRegex.test(attr)) {
 				throw new TypeError('Invalid HTML attribute name');
@@ -45,8 +47,8 @@ export function h(type: string, props?: Props | null, ...children: unknown[]): E
 	html += '>';
 
 	if (!VOID_ELEMENTS.has(type)) {
-		if (props && props.dangerouslySetInnerHTML) {
-			html += props.dangerouslySetInnerHTML.__html;
+		if (props && props[SET_INNER_HTML_PROP]) {
+			html += props[SET_INNER_HTML_PROP].__html;
 		} else {
 			children.flat().forEach((child) => {
 				if (child instanceof Element) {
